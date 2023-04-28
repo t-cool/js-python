@@ -106,6 +106,53 @@ port=5000: サーバーをポート5000で実行します。
 
 ## script.js
 
+script.jsでは、JavaScriptを使用してフロントエンドの操作を監視し、Pythonバックエンドにデータを送信しています。以下に、コードの詳細な説明を示します。
+
+DOMContentLoadedイベントリスナーを設定します。これにより、HTML要素がすべて読み込まれた後に、コードが実行されるようになります。
+
+```
+document.addEventListener('DOMContentLoaded', () => {
+    // ...
+});
+```
+
+sendDataというIDを持つボタン要素に対して、クリックイベントリスナーを追加します。ボタンがクリックされると、このリスナーが実行されます。
+
+```
+    document.getElementById('sendData').addEventListener('click', async () => {
+        // ...
+    });
+```
+
+ボタンがクリックされたときに送信するデータ（actionとtimestamp）を作成します。
+
+```
+        const data = {
+            action: "button_click",
+            timestamp: new Date().toISOString(),
+        };
+```
+
+fetch関数を使って、Pythonバックエンドに対してPOSTリクエストを送信します。リクエストには、JSON形式に変換したデータを含めます。
+
+```
+        const response = await fetch('http://localhost:5000/analyze', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+```
+
+バックエンドからのレスポンスをJSON形式に変換し、結果をコンソールに出力します。
+
+```
+        const result = await response.json();
+        console.log(result);
+```
+
+このコードでは、ボタンがクリックされるたびにデータがPythonバックエンドに送信され、結果がコンソールに表示されます。この方法を使用して、フロントエンドでユーザー操作を監視し、データをバックエンドに送信して処理することができます。
 
 
 ## ライセンス
